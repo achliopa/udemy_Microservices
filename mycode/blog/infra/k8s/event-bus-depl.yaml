@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-bus-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-bus
+  template:
+    metadata:
+      labels:
+        app: posts
+    spec:
+      containers:
+        - name: event-bus
+          image: achliopa/event-bus
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-bus-srv
+spec:
+  type: ClusterIP # default type can be ommitted
+  selector:
+    app: event-bus 
+  ports: 
+    - name: event-bus
+      protocol: TCP
+      port: 4005 # export the port our app to an external port
+      targetPort: 4005 # internal port of pod (in code)
