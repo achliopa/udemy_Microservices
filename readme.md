@@ -1,7 +1,7 @@
 # Udemy Course - Microservices with Node JS and React
 
-* [Course](https://www.udemy.com/course/microservices-with-node-js-and-react/)
-* [Repository - Drawings](https://github.com/StephenGrider/microservices-casts)
+- [Course](https://www.udemy.com/course/microservices-with-node-js-and-react/)
+- [Repository - Drawings](https://github.com/StephenGrider/microservices-casts)
 
 ## Section 1: Fundamental Ideas Around Microservices
 
@@ -9,23 +9,24 @@
 
 A monolith contains:
 
-* Routing
-* Middleware
-* Business Logic (Feature)
-* DB Access
-to implement all features in an app
+- Routing
+- Middleware
+- Business Logic (Feature)
+- DB Access
+  to implement all features in an app
 
 A microservice contains all the above to implement one feature of an app
 
 ### Lecture 5. Data in Microservices
 
 Microservice Problem #1 Data Mngmnt between services (store and comm date between services)
-* each service gets its own database
-* service will never access the others DB
-DB per Service to:
-* each srvice run independent
-* db schema/struct to be able to change
-* db optimized per srvice
+
+- each service gets its own database
+- service will never access the others DB
+  DB per Service to:
+- each srvice run independent
+- db schema/struct to be able to change
+- db optimized per srvice
 
 ### Lecture 7. Sync Communication Between Services
 
@@ -42,21 +43,22 @@ Event Bus is a single point of failure, it acts as a hub between services. it ha
 ### Lecture 9. A Crazy Way of Storing Data
 
 Like DB per service, async comm seems bizarre and inefficient
-* first we define inputs-outputs to a new service (e.g given user ID show title/iage of every product ordered)
-* then create a DB with only the fields in speced IOs (e.g User{id, prod ids} Products{id,title,image})
-Problem: How we populate/sync the new DB from existing service DBs? A service is not aware when other services pdate their DBs
-We need to solve this without create dependencies, no cascade fails (Event Bus saves the day)
-* when a service updates its DB emits an event to the EventBus (with event type and update data)
-* interested services listen to events on bus and update their DBs as well
+
+- first we define inputs-outputs to a new service (e.g given user ID show title/iage of every product ordered)
+- then create a DB with only the fields in speced IOs (e.g User{id, prod ids} Products{id,title,image})
+  Problem: How we populate/sync the new DB from existing service DBs? A service is not aware when other services pdate their DBs
+  We need to solve this without create dependencies, no cascade fails (Event Bus saves the day)
+- when a service updates its DB emits an event to the EventBus (with event type and update data)
+- interested services listen to events on bus and update their DBs as well
 
 ### Lecture 10. Pros and Cons of Async Communication
 
 Pros:
-    * zero dependencies
-    * services are extremely fast 
+_ zero dependencies
+_ services are extremely fast
 Cons:
-    * data duplication (extra DB, storage)
-    * difficult to understand
+_ data duplication (extra DB, storage)
+_ difficult to understand
 
 ## Section 2: A Mini-Microservices App
 
@@ -71,21 +73,22 @@ Comments are tied to Posts (dependency) so we will need an EventBus to Sync (may
 ### Lecture 12. Project Setup
 
 One React Frontend App + 2 Services (Router + Posts/Comments Feature)
-Steps: 
-    * Generate a new React App using Create-React-App
-    * Create an Express based project for the Posts Service
-    * Create an Express based project for the Comments Service
+Steps:
+_ Generate a new React App using Create-React-App
+_ Create an Express based project for the Posts Service
+* Create an Express based project for the Comments Service
 We create our react app with `npx create-react-app client`
 We create a folder for posts service `mkdir posts` and init start a node project `npm init -y` and we install in posts the necessary packages `npm install express cors axios nodemon`
-we repeat the same process like posts for a *comments* folder
+we repeat the same process like posts for a *comments\* folder
 To run the project we need 3 terminal windows
 
 ### Lecture 13. Posts Service Creation
 
 2 actions (routes) as express app
-    * POST /posts {title: string} => Create new post
-    * GET /posts                  => Retrieve all posts
+_ POST /posts {title: string} => Create new post
+_ GET /posts => Retrieve all posts
 we ll store data in memory (nn persistent) and write a boilerplate file
+
 ```
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -103,11 +106,11 @@ app.get('/posts', (req,res) => {
 app.post('/posts', (req,res) => {
     const id = randomBytes(4).toString('hex');
     const { title } = req.body;
-    
+
     posts[id] = {
         id, title
     };
-    
+
     res.status(201).send(posts[id]);
 });
 
@@ -124,8 +127,8 @@ we use postman to test our api. use application/json as content-type and write b
 
 ### Lecture 15. Implementing a Comments Service
 
-* repeat same for comments.. we get array if undefined create empty array
-* `:id` in path can be extracted as param
+- repeat same for comments.. we get array if undefined create empty array
+- `:id` in path can be extracted as param
 
 ### Lecture 21. Handling CORS Errors
 
@@ -146,7 +149,7 @@ get data as array from object `Object.values`
 
 ### Lecture 23. Creating Comments
 
-do the same as Posts creating React comps for Comments but we need id of the post for the 
+do the same as Posts creating React comps for Comments but we need id of the post for the
 POST method. this is done with props. we add state using React Hook and event handlers
 
 ### Lecture 24. Displaying Comments
@@ -172,7 +175,6 @@ do not leave unahndled Promise Rejections as they crash the app (node v15+)
 ### Lecture 31. A Basic Event Bus Implementation
 
 add a new folder for service `/event-bus` install express nodemon axios
-
 
 ### Lecture 35. Creating the Data Query Service
 
@@ -239,20 +241,24 @@ k8s service gicves access to running pods of same container in the cluster it of
 ### Lecture 65. Notes on Config Files
 
 K8s Config Files
-* tells k8s about the different deployments, pods and services(objects) we want to create
-* written in YAML
-* always store these files with project source code
-* dont create objects without config files (run direct commands only for testing or learning)
+
+- tells k8s about the different deployments, pods and services(objects) we want to create
+- written in YAML
+- always store these files with project source code
+- dont create objects without config files (run direct commands only for testing or learning)
 
 ### Lecture 66. Creating a Pod
 
 into posts directory. we rebuild the image to tag it `docker build -t achliopa/posts:0.0.1 .` out of current dir
 push image to dockerhub
+
 ```
 docker login
 
 ```
+
 we create a new dir called /infra/k8s in the project and add posts.yaml
+
 ```
 apiVersion: v1  ### k8s is extensible we can add in our own objects. this specs the set of obejects we want k8s to look at
 kind: Pod ### type of object we want to create
@@ -263,12 +269,14 @@ spec: ### the exact attribute to apply to object we will create
     - name: posts ### name of container
       image: achliopa/posts:0.0.1 ### image to use for container
 ```
+
 the above file tells k8s to create a pod with a container of our image
 we run the file `minikube kubectl apply -f posts.yaml`
 If your pods are showing ErrImagePull, ErrImageNeverPull, or ImagePullBackOff errors after running kubectl apply, the simplest solution is to provide an imagePullPolicy to the pod.
 First, run `kubectl delete -f infra/k8s/`
 
 Then, update your pod manifest:
+
 ```
 spec:
   containers:
@@ -276,6 +284,7 @@ spec:
       image: cygnet/posts:0.0.1
       imagePullPolicy: Never
 ```
+
 Then, run `kubectl apply -f infra/k8s/`
 [tutorial](https://minikube.sigs.k8s.io/docs/commands/docker-env/)
 
@@ -292,9 +301,10 @@ to replace kubectl with k edit `~/.bahrc` file and add `alias k=kubectl`
 
 ### Lecture 71. Introducing Deployments
 
-a deployment manages a set of pods (same pods). if a pod stops a new one is deployed. 
+a deployment manages a set of pods (same pods). if a pod stops a new one is deployed.
 also it deploys new versions automatically (new pods and stop old pods)
 we create a new config file for deployment posts-depl.yaml
+
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -325,16 +335,17 @@ Deployment commands
 ### Lecture 74. Updating Deployments
 
 Update image used in a depl (method 1)
-* make a change to the code
-* rebuild image using a new version num
-* in config file update image version
-* redeploy
-Update image used in a depl (method 2)
-* use latest tag in depl config file for pod spec
-* make a change to the code
-* rebuild image 
-* push image in docker hub
-* run command `kubectl rollout restart deployment [depl_name]`
+
+- make a change to the code
+- rebuild image using a new version num
+- in config file update image version
+- redeploy
+  Update image used in a depl (method 2)
+- use latest tag in depl config file for pod spec
+- make a change to the code
+- rebuild image
+- push image in docker hub
+- run command `kubectl rollout restart deployment [depl_name]`
 
 ### Lecture 76. Networking With Services
 
@@ -343,11 +354,12 @@ we have 4 types of services
 Cluster IP: sets up an easy to remember URL to access a pod. only exposes pods to the k8s cluster
 Node Port: makes a pod accessible from outside a cluster. usually only used for dev purposes
 Load balancer: makes a pod accessible from outside the k8s cluster. this is the way to expose a pod to the world
-External Name: redirects an in-cluster request to a CNAME url 
+External Name: redirects an in-cluster request to a CNAME url
 
 ### Lecture 77. Creating a NodePort Service
 
 we create a new config file posts-srv.yaml
+
 ```
 apiVersion: v1
 kind: Service
@@ -357,12 +369,13 @@ spec:
   type: NodePort
   selector:
     app: posts ## find pods with this label to network
-  ports: 
+  ports:
     - name: posts
       protocol: TCP
       port: 4000 # export the port our app to an external port
       targetPort: 4000 # internal port of pod (in code)
 ```
+
 nodePort is the port used to access nodePort service from outside the cluster. if not speced its random
 we can see it with `kubectl describe service [srv name]`
 if we use minikube we need to add the mikikubeIp to access the service from outside not the `localhost:nodePort/posts`
@@ -373,25 +386,27 @@ we will create a second pd to run event bus and use clusterIP to achieve comm be
 a pod reaches another pod in the cluster using a clusterIP service
 an internal cluster ip is variable so comm is upredictable
 Workflow
-* build an image for the event bus `docker build -t achliopa/event-bus .`
-* push the image to dockerhub `docker push achliopa/event-bus`
-* create a deployment for event bus (cp posts-depl and replace names) and deploy
-* create a clusterip service for event bus and posts (in the same deployment file of app using --- much like nodePort config)
-* wire it all up
+
+- build an image for the event bus `docker build -t achliopa/event-bus .`
+- push the image to dockerhub `docker push achliopa/event-bus`
+- create a deployment for event bus (cp posts-depl and replace names) and deploy
+- create a clusterip service for event bus and posts (in the same deployment file of app using --- much like nodePort config)
+- wire it all up
 
 ### Lecture 82. How to Communicate Between Services
 
 we need to alter code in axios AJAX calls to backend apis replacing localhost with proper hostname
-we get service hostnames with command `kubectl get services` in our case http://event-bus-srv:4005 
+we get service hostnames with command `kubectl get services` in our case http://event-bus-srv:4005
 or http://posts-clusterip-srv:4000. so in code instead of localhost we give the service name
 
 ### Lecture 85. Adding Query, Moderation and Comments
 
 Adding More Services (for comments, query, moderation)
-* update urls in each to reach out to event bus service
-* build image push to dockerhub
-* create a deployment + clusterip service for each
-* update the event bus to send again events to comments query and moderation
+
+- update urls in each to reach out to event bus service
+- build image push to dockerhub
+- create a deployment + clusterip service for each
+- update the event bus to send again events to comments query and moderation
 
 ### Lecture 87. Load Balancer Services
 
@@ -410,6 +425,7 @@ ingress-nginx creates a load balancer service and Ingress. an alternative is kub
 ### Lecture 92. Writing Ingress Config Files
 
 we add ingress-srv.yaml
+
 ```
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -430,6 +446,7 @@ spec:
                 port:
                   number: 4000
 ```
+
 debugging tip: check status of port 80 `sudo lsof -i tcp:80`
 
 ### Lecture 94. Hosts File Tweak
@@ -441,17 +458,18 @@ to make domain point to localhost or minikube ip we edit `/etc/hosts` adding `12
 
 NOTE dockerizing create-react-app has a [bug](https://github.com/facebook/create-react-app/issues/8688)
 make a tweek to its dockerfile
+
 ```
 ROM node:alpine
- 
-# Add the following line 
+
+# Add the following line
 ENV CI=true
- 
+
 WORKDIR /app
 COPY package.json ./
 RUN npm install
 COPY ./ ./
- 
+
 CMD ["npm", "start"]
 ```
 
@@ -460,25 +478,29 @@ CMD ["npm", "start"]
 flesh ingress config. ingress cannot route based on http method. we need unique routes
 we just add more paths in the ingress-srv.yaml pointing to other services in the cluster
 a parametrical path `/posts/:id/comments` ingress route
+
 ```
 - path: /posts/?(.*)/comments
   backend:
     service:
       name: comments-srv
-      port: 
+      port:
         number: 4004
 ```
+
 go from specific to generic routes generic / route is expressed `/?(.*)`
 
 ### Lecture 99. Introducing Skaffold
 
 a tool to automate deployments
-* automates many tasks in a K8s dev env
-* makes it easy to update code in a pod running
-* makes it easy to create/delete all objets tied to a project
-* scaffold.dev
+
+- automates many tasks in a K8s dev env
+- makes it easy to update code in a pod running
+- makes it easy to create/delete all objets tied to a project
+- scaffold.dev
 
 Not for production environment. setup with `scaffold.yaml` for the whole project
+
 ```
 apiVersion: skaffold/v2alpha3
 kind: Config
@@ -507,29 +529,45 @@ build:
           - src: "*.js"
             dest: .
 ```
+
 when we stop skaffold all temp files are deleted (clean project)
 artifacts are maintained (rbuild on changes)
 to start skaffold `skaffold dev` (manifest unknown messages at first run rerun)
 it has challege detect changes in containers
-stp skaffold with ctrl+c 
+stp skaffold with ctrl+c
 
 ## Section 5: Architecture of Multi-Service Apps
 
 ### Lecture 103. Big Ticket Items
 
 Lessons from first dummy app
-* real challenge in microservices is data
-* many diff ways to share data between services. we focus on async comm
-* async comm focuses on events and uses an event bus
-* async comm strives to make micros 100% self sufficient. handle temp downtime on new service creation
-* with docker easy to package services
-* k8s difficult to stup bt paysdividents to deploy + scale services
-Challenges on first dummy app
-* duplicated code => build a central lib as NPM module to share code
-* hard to picture flow of events between services => define all events in the lib
-* hard to remember properties of an event => write in typescript
-* hard to test event flows => write tests
-* k8s consumes resources => run k8s on cloud and setup a fast workflow
-* event serialization?  => write code for concurrency
+
+- real challenge in microservices is data
+- many diff ways to share data between services. we focus on async comm
+- async comm focuses on events and uses an event bus
+- async comm strives to make micros 100% self sufficient. handle temp downtime on new service creation
+- with docker easy to package services
+- k8s difficult to stup bt paysdividents to deploy + scale services
+  Challenges on first dummy app
+- duplicated code => build a central lib as NPM module to share code
+- hard to picture flow of events between services => define all events in the lib
+- hard to remember properties of an event => write in typescript
+- hard to test event flows => write tests
+- k8s consumes resources => run k8s on cloud and setup a fast workflow
+- event serialization? => write code for concurrency
 
 We will now learn the correct way for production grade apps
+
+## Section 25: [Appendix B] - Basics of Typescript
+
+### Lecture 571. A First App
+
+with typescript we can catch bugs while writing code not debugging
+
+### Lecture 577. Types
+
+Type: easy way to refer to the different properties + functions that a value has
+Value: anythig we can assign to a var
+Primitive types: number string boolean void
+Object Types: functions, classes, objects, arrays
+Types are
