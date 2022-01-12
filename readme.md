@@ -570,4 +570,22 @@ Type: easy way to refer to the different properties + functions that a value has
 Value: anythig we can assign to a var
 Primitive types: number string boolean void
 Object Types: functions, classes, objects, arrays
-Types are
+
+### Lecture 581. Type Annotations and Inference
+
+Type Annotations: Code we add to tell TS what type of value a var will refer to `const apples: number = 5;`
+Type Inference: TS tries to figure out what type of value a var refers to
+how to annotate functions
+```
+const logNumber: (i:number) => void = (i: number) => {
+  console.log(i);  
+};
+```
+how to annotate obj literals
+```
+let point: { x: number; y: number } = {
+    x: 10,
+    y: 20
+};
+
+```
