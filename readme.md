@@ -574,7 +574,7 @@ Object Types: functions, classes, objects, arrays
 ### Lecture 581. Type Annotations and Inference
 
 Type Annotations: Code we add to tell TS what type of value a var will refer to `const apples: number = 5;`
-Type Inference: TS tries to figure out what type of value a var refers to
+Type Inference: TS tries to figure out what type of value a var refers to (declaration and initialization on same line)
 how to annotate functions
 ```
 const logNumber: (i:number) => void = (i: number) => {
@@ -589,3 +589,57 @@ let point: { x: number; y: number } = {
 };
 
 ```
+
+use type annotations when:
+* we declare a var in one line and initialize it it further below
+* we want a var to have a type that cant be inferred
+* function returns any type and we want to clarify the val
+
+`JSON.parse()` returns any type as depending on what we feed in returns a different type. typescript cannot predict the type
+avoid variables with 'any' type at all cost. TS has no idea what that is
+double type annotation `let numberAboveZero: boolean | number = false;`
+
+### Lecture 590. More on Annotations Around Functions
+
+type annotations for functions: codde we add to tell typescript what type of arguments a function will receive and what type of values it will returns
+type inference for functions: typescript tries to figure out hat type of value a function will return
+```
+const add = (a: number, b: number): number => {
+    return a + b;
+};
+```
+output is inferred by TS by function implementation BAD practice. does not catch coding bugs
+ES 2015 destructuring annotation
+```
+const logWeather = ({date, weather}: {date: Date, weather: string}): void => {
+    console.log(date);
+    console.log(weather);
+    
+};
+```
+
+### Lecture 595. Annotations Around Objects
+
+Why we care?
+* TS can do type inference when extrcting vlues from an array
+* TS can prevent us from adding incompatible values to the array
+* We can get help with 'map', 'forEach', 'reduce' functions
+* Flexible - arrays can still contain multiple different types
+When to use typed arrays? any time we need to represent a collection of records with some arbitrary sort order
+
+### Lecture 600. Tuples in TypeScript
+
+Tuple: array like structure where each element represents some property of a record
+tuple annotation: specific order of types `const pepsi: [string, boolean, number] = ['brown', true, 40];`
+type alias `type Drink = [string,boolean,number];`
+
+### Lecture 603. Interfaces
+
+Interfaces + Classes = strong code reuse in TS
+Interfces: creates a new type, describing the property names and value types of an object
+interfaces can have complex types inside or even function annotations
+implementations of interfaces can have more attributes
+
+General strattegy for reusable code in TS:
+* create functions that accept arguments that are typed with interfces
+* objects/classes can decide to 'implement' a given interface to work with a function
