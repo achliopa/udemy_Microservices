@@ -675,3 +675,7 @@ declare module '@faker-js/faker' {
 in TS we can freely use JS and JS libraries. to use JS files with no warnings we use type definition files. some libs include type definition files
 usually a `@types/{libname}` package exists to add types
 in class definitions object props uninitialized are of type undefined
+in TS we do not use export default. in React yes
+info on how to add googlmaps lib in TS [doc](https://developers.google.com/maps/documentation/javascript/using-typescript#Module_Import)
+when w add js files in html we need to let TS understand where it is. not like import. we need a @types/ packageinstalled with npm
+TS checks if a class implements an interface
