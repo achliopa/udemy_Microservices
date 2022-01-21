@@ -643,3 +643,35 @@ implementations of interfaces can have more attributes
 General strattegy for reusable code in TS:
 * create functions that accept arguments that are typed with interfces
 * objects/classes can decide to 'implement' a given interface to work with a function
+
+### Lecture 610. Classes
+
+Classes: blueprint to create an object with some fields (values) and methods (functions) to represent an entity
+class inheritance through `extends`
+public: this method can be called anywhere any time
+private: this method can only be called by other methods in this class
+protected: this method can be called by other methods in this class or by other methods in child classes
+when we overwrite a method we cannot change the modifier
+TS field declaration in constructor `constructor(public color: string) {}`5
+constructor is inherited
+
+### Lecture 616. App Overview
+
+basic web app to practice TS. it will generate a random User and Company with geolocation props and show them as pins on google maps
+`npm install -g parcel-bundler` instead of ts-node to run TS in browser flawlessly
+add a 'maps' folder. 
+howw parcel bundler works: add an index.html file in folder, add a script tag for index.ts. feed index.html in parcel tool `parcel index.html`
+we need 3 entities minimum User.ts Company.Ts Map.ts
+*Install faker*
+If you wish to use this library instead, you can install it by running: `npm install @faker-js/faker` You'll then need to update your imports: `import faker from '@faker-js/faker';`
+In order to use the @types/faker with this new library, you must manually link them using a *.d.ts file:
+```
+// faker.d.ts
+declare module '@faker-js/faker' {
+  import faker from 'faker';
+  export default faker;
+}
+```
+in TS we can freely use JS and JS libraries. to use JS files with no warnings we use type definition files. some libs include type definition files
+usually a `@types/{libname}` package exists to add types
+in class definitions object props uninitialized are of type undefined
