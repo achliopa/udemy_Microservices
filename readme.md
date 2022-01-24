@@ -538,7 +538,7 @@ stp skaffold with ctrl+c
 
 ## Section 5: Architecture of Multi-Service Apps
 
-### Lecture 103. Big Ticket Items
+### Lecture 105. Big Ticket Items
 
 Lessons from first dummy app
 
@@ -557,6 +557,31 @@ Lessons from first dummy app
 - event serialization? => write code for concurrency
 
 We will now learn the correct way for production grade apps
+
+code duplication: build a central NPM lib for reusable code
+picture the flow of events: define all events in shared lib
+hard to remember event properties: use typescript
+hard to test event flows: write as many tests as possible
+machine is struglisng with k8s: run on cloud
+concurrency: use code to solve it
+
+### Lecture 106. App Overview
+
+Ticketing App
+
+* users can list a ticket for an event (concert, sports) for sale
+* other users can purchase the ticket
+* any user can list tickets for sale and purchase tickets
+* when a user attempts to purchase a ticket, the ticket is locked for 15 minutes. the user has 15 minutes to enter payment info
+* while locked no other user can purchase the ticket. after 15 mins the ticket is unlocked
+* ticket prices can be edited if unlocked
+
+Resource Types
+
+User:{ email: string; password: string }
+Order: { userId: User.id ; status: enum ;  ticketId: Ticket.id ; expiresAt: Date }
+Ticket: { title: string ; price: number ; userId: User.id ; order.Id: Order.id }
+Charge: { orderId: Order.id ; status: enum ; amount: number; stripeId: string ; stripeRefundId: string }
 
 ## Section 25: [Appendix B] - Basics of Typescript
 
