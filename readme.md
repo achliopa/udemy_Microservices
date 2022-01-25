@@ -583,6 +583,111 @@ Order: { userId: User.id ; status: enum ;  ticketId: Ticket.id ; expiresAt: Date
 Ticket: { title: string ; price: number ; userId: User.id ; order.Id: Order.id }
 Charge: { orderId: Order.id ; status: enum ; amount: number; stripeId: string ; stripeRefundId: string }
 
+Services
+
+auth: everything related to user signup/signout
+tickets: ticket creation/editing. knows whether a ticket can be updated
+orders: order creation/editing
+expiration: watches for orders to be created. cancels them after 15 minutes
+payments: handles credit card payments. cancels orders if payments fails. completes if payment suceeds
+
+Feature-based orresource-based services based on application
+
+Events
+
+UserCreated, UserUpdated
+OrderCreated, OrrderCancelled, OrderExpired
+TicketCreated, TicketUpdated
+ChargeCreated
+
+client: nextjs
+auth service: node + mongodb
+tickets service: node + mongodb
+orders: node + mongodb
+payments: node + mongodb
+expiration: node + redis
+event hub: nats streaming server
+
+### Lecture 111. Auth Service Setup
+
+/api/users/signup => POST {email: string, password: string } SIGN UP FOR AN ACCOUNT
+/api/users/signin => POST {email: string, password: string } SIGNIN TO AN EXISTING ACCOUNT
+/api/users/signout => POST {} SIGNOUT
+/api/users/currentuser => GET - RETURN INFO ABOUT USER
+
+npm install packages for service ` npm install typescript ts-node-dev express @types/express`
+init TS compiler `tsc --init`
+write boiler express code
+add start script in package.json `"start": "ts-node-dev src/index.ts"`
+create an image with docker adding a Dockerfile and .dockerignore file
+```
+FROM node:alpine
+
+WORKDIR /app
+COPY package.json .
+RUN npm install
+COPY . .
+
+CMD ["npm","start"]
+```
+build image `docker build -t achliopa/auth .`
+we add config to deploy the image to a k8s cluster, in same file we add config to deploy a cluster-Ip service (default) for the pod
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+    name: auth-depl
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: auth
+    template:
+        metadata:
+            labels:
+                app: auth
+        spec:
+            containers:
+                - name: auth
+                  image: achliopa/auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: auth-srv
+spec:
+    selector:
+        app: auth
+    ports:
+        - name: auth
+          protocol: TCP
+          port: 3000
+          targetPort: 3000
+```
+add a skaffold.yaml file in roject root to orchestrate k8s 
+```
+apiVersin: skaffold/v2alpha3
+kind: Config
+deploy:
+    kubectl:
+        manifests:
+            - ./infra/k8s/*
+build:
+    local:
+        push: false
+    artifacts:
+        - image: achliopa/auth
+          context: auth
+          docker:
+            dockerfile: Dockerfile
+          sync:
+            manual:
+                - src: 'src/**/*.ts'
+                  dest: .
+```
+run skaffold `skaffold dev`
+
+
 ## Section 25: [Appendix B] - Basics of Typescript
 
 ### Lecture 571. A First App
